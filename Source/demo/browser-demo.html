@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Chainium SDK for JS - Demo</title>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 16px;
+        }
+
+        input, textarea {
+            width: 50em;
+            font-family: Monaco, Consolas, 'Courier New', Courier, monospace;
+            font-size: 16px;
+            margin-bottom: 1em;
+            background-color: #ffffee;
+        }
+
+        button {
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <label for="private-key">Private Key:</label>
+    <br>
+    <input type="text" id="private-key">
+    <button onclick="generateWalletButtonClick()">Generate Wallet</button>
+    <br>
+
+    <label for="address">Address:</label>
+    <br>
+    <input type="text" id="address">
+    <button onclick="deriveAddressFromPrivateKeyButtonClick()">Derive Address</button>
+    <br>
+
+    <label for="tx-body">Tx:</label>
+    <br>
+    <textarea name="tx-body" id="tx-body" cols="100" rows="20">
+{
+    SenderAddress: "CHLsVaYSPJGFi8BNGd6tP1VvB8UdKbVRDKD",
+    Nonce: 1,
+    Fee: 0.001,
+    Actions: [
+        {
+            ActionType: "TransferChx",
+            ActionData: {
+                RecipientAddress: "CHfDeuB1y1eJnWd6aWfYaRvpS9Qgrh1eqe7",
+                Amount: 1.5
+            }
+        }
+    ]
+}
+    </textarea>
+    <button onclick="signTxButtonClick()">Sign Tx</button>
+    <br>
+
+    <label for="tx-signature">Signed Tx:</label>
+    <br>
+    <textarea name="tx-signature" id="tx-signature" cols="100" rows="10"></textarea>
+
+    <script src="../dist/chainiumSdk.js"></script>
+    <script>
+        document.getElementById('private-key').value = '2C6sgXHMLkwiWeUK4fpyVFa3XG59MBa221pkW7kq2KB8';
+        document.getElementById('address').value =
+            chainiumSdk.crypto.addressFromPrivateKey(document.getElementById('private-key').value);
+
+        function generateWalletButtonClick() {
+            var wallet = chainiumSdk.crypto.generateWallet();
+            document.getElementById('private-key').value = wallet.privateKey;
+            document.getElementById('address').value = wallet.address;
+        }
+
+        function deriveAddressFromPrivateKeyButtonClick() {
+            document.getElementById('address').value =
+                chainiumSdk.crypto.addressFromPrivateKey(document.getElementById('private-key').value);
+        }
+
+        function signTxButtonClick() {
+            var tx = chainiumSdk.crypto.encode64(chainiumSdk.crypto.utf8ToHex(document.getElementById('tx-body').value));
+            var signature = chainiumSdk.crypto.signMessage(document.getElementById('private-key').value, chainiumSdk.crypto.decode64(tx));
+            document.getElementById('tx-signature').value = JSON.stringify({
+                tx: tx,
+                v: signature.v,
+                r: signature.r,
+                s: signature.s
+            });
+        }
+    </script>
+</body>
+</html>

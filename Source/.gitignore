@@ -1,0 +1,8 @@
+# Tools
+**/.idea
+**/.vs
+*.user
+
+# Outputs
+node_modules
+dist
