@@ -91,7 +91,7 @@
 
     function signMessage(privateKey, hexMessage) {
         var messageHash = sha256(hexMessage);
-        var signature = ec.sign(messageHash, decode58(privateKey), 'hex', {canonical: false});
+        var signature = ec.sign(messageHash, decode58(privateKey), 'hex', {canonical: true});
         return {
             v: encode58('0' + signature.recoveryParam),
             r: encode58(signature.r.toString('hex').padStart(64, "0")),
