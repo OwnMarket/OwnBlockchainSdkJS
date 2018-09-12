@@ -114,11 +114,7 @@ test('signMessage', () => {
     // ARRANGE
     const privateKey = '3rzY3EENhYrWXzUqNnMEbGUr3iEzzSZrjMwJ1CgQpJpq';
     const tx = chainiumCrypto.utf8ToHex('Chainium');
-    const expected = {
-        v: "1",
-        r: "BfgsYFCqzKt9ViJpXT2Jt5yM323EdFCyygYSzPoeasNb",
-        s: "84Vups9Q2ubF7jg9Xa6b9vMQWgLAsMnyp1VFnAk6yHVb"
-    };
+    const expected = "EzCsWgPozyVT9o6TycYV6q1n4YK4QWixa6Lk4GFvwrj6RU3K1wHcwNPZJUMBYcsGp5oFhytHiThon5zqE8uLk8naB";
 
     // ACT
     const actual = chainiumCrypto.signMessage(privateKey, tx);
