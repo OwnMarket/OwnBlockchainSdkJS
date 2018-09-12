@@ -8,7 +8,7 @@ Chainium SDK for JavaScript
 ```bash
 $ git clone https://github.com/Chainium/ChainiumSdkJS.git
 $ cd ChainiumSdkJS/Source
-$ npm install
+$ npm ci
 ```
 
 
