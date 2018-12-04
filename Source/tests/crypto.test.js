@@ -82,6 +82,20 @@ test('hash', () => {
     expect(actual).toBe(expected);
 });
 
+test('deriveHash', () => {
+    // ARRANGE
+    const address = 'CHPJ6aVwpGBRf1dv6Ey1TuhJzt1VtCP5LYB';
+    const nonce = 32;
+    const txActionNumber = 2;
+    const expected = '5kHcMrwXUptjmbdR8XBW2yY3FkSFwnMdrVr22Yg39pTR';
+
+    // ACT
+    const actual = chainiumCrypto.deriveHash(address, nonce, txActionNumber);
+
+    // ASSERT
+    expect(actual).toBe(expected);
+});
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // Signing
 ////////////////////////////////////////////////////////////////////////////////////////////////////

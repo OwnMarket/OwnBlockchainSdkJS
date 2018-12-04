@@ -63,6 +63,13 @@
         return encode58(sha256(hexData));
     }
 
+    function deriveHash(address, nonce, txActionNumber) {
+        var addressHex = decode58(address).padStart(52, "0");
+        var nonceHex = nonce.toString(16).padStart(16, "0");
+        var txActionNumberHex = txActionNumber.toString(16).padStart(4, "0");
+        return hash(addressHex + nonceHex + txActionNumberHex);
+    }
+
     function chainiumAddress(hexPublicKey) {
         var prefix = '065A';
         var hash = sha160(sha256(hexPublicKey));
@@ -109,6 +116,7 @@
 
         // Hashing
         hash: hash,
+        deriveHash: deriveHash,
 
         // Signing
         generateWallet: generateWallet,
