@@ -23,6 +23,11 @@
     </style>
 </head>
 <body>
+    <label for="private-key">Network Code:</label>
+    <br>
+    <input type="text" id="network-code">
+    <br>
+
     <label for="private-key">Private Key:</label>
     <br>
     <input type="text" id="private-key">
@@ -62,6 +67,7 @@
 
     <script src="../dist/chainium-sdk.js"></script>
     <script>
+        document.getElementById('network-code').value = 'OWN_PUBLIC_BLOCKCHAIN_DEVNET';
         document.getElementById('private-key').value = '1EQKWYpFtKZ1rMTqAH8CSLVjE5TN1nPpofzWF68io1HPV';
         document.getElementById('address').value =
             chainiumSdk.crypto.addressFromPrivateKey(document.getElementById('private-key').value);
@@ -78,8 +84,12 @@
         }
 
         function signTxButtonClick() {
-            var tx = chainiumSdk.crypto.encode64(chainiumSdk.crypto.utf8ToHex(document.getElementById('tx-body').value));
-            var signature = chainiumSdk.crypto.signMessage(document.getElementById('private-key').value, chainiumSdk.crypto.decode64(tx));
+            var tx = chainiumSdk.crypto.encode64(
+                chainiumSdk.crypto.utf8ToHex(document.getElementById('tx-body').value));
+            var signature = chainiumSdk.crypto.signMessage(
+                document.getElementById('network-code').value,
+                document.getElementById('private-key').value,
+                chainiumSdk.crypto.decode64(tx));
             document.getElementById('tx-signature').value = JSON.stringify({
                 tx: tx,
                 signature: signature

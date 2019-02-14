@@ -96,9 +96,11 @@
         return chainiumAddress(keyPair.getPublic('hex'));
     }
 
-    function signMessage(privateKey, hexMessage) {
+    function signMessage(networkCode, privateKey, hexMessage) {
         var messageHash = sha256(hexMessage);
-        var signature = ec.sign(messageHash, decode58(privateKey), 'hex', {canonical: true});
+        var networkCodeHash = sha256(utf8ToHex(networkCode));
+        var dataToSign = sha256(messageHash + networkCodeHash);
+        var signature = ec.sign(dataToSign, decode58(privateKey), 'hex', {canonical: true});
         var signatureBytes =
             signature.r.toString('hex').padStart(64, "0")   // R
             + signature.s.toString('hex').padStart(64, "0") // S

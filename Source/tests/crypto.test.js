@@ -126,15 +126,14 @@ test('addressFromPrivateKey', () => {
 
 test('signMessage', () => {
     // ARRANGE
+    const networkCode = 'UNIT_TESTS';
     const privateKey = '3rzY3EENhYrWXzUqNnMEbGUr3iEzzSZrjMwJ1CgQpJpq';
     const tx = chainiumCrypto.utf8ToHex('Chainium');
-    const expected = "EzCsWgPozyVT9o6TycYV6q1n4YK4QWixa6Lk4GFvwrj6RU3K1wHcwNPZJUMBYcsGp5oFhytHiThon5zqE8uLk8naB";
+    const expected = "EYzWMyZjqHkwsNFKcFEg4Q64m4jSUD7cAeKucyZ3a9MKeNmXTbRK3czqNVGj9RpkPGji9AtGiUxDtipqE3DtFPHxU";
 
     // ACT
-    const actual = chainiumCrypto.signMessage(privateKey, tx);
+    const actual = chainiumCrypto.signMessage(networkCode, privateKey, tx);
 
     // ASSERT
-    expect(actual.v).toBe(expected.v);
-    expect(actual.r).toBe(expected.r);
-    expect(actual.s).toBe(expected.s);
+    expect(actual).toBe(expected);
 });
