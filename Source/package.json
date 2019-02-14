@@ -1,11 +1,11 @@
 {
   "name": "chainium-sdk",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Chainium SDK for JavaScript",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Chainium/ChainiumSdkJS"
+    "url": "git+https://github.com/OwnMarket/OwnBlockchainSdkJS"
   },
   "scripts": {
     "test": "jest"
