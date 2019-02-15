@@ -25,34 +25,36 @@ var txBase64 = chainiumSdk.crypto.encode64(txRaw);
 console.log('Tx:', txBase64);
 console.log(chainiumSdk.crypto.signMessage(networkCode, wallet.privateKey, txRaw));
 
+console.log('Addresses:');
 [
-    "2C6sgXHMLkwiWeUK4fpyVFa3XG59MBa221pkW7kq2KB8",
-    "3H2V8pM1h4wJEzCfuBHbNBC4w2FvXszKXx6nMEs3mUcC",
-    "CpxNZ1YsPCmVrLwJzP7H88gHthSjBSySgVR3iK1c1VBk",
-    "GzsiWSoVZtDKwGeLELjpqRW618eBsWmFxJhE2wobkzmP",
-    "Ai6m6px88vHv9L3uVtqSGMRoRDatem7xYXdUyAgg7fon",
-    "DdJtweNMxs6vfL3dGUMzZHM3GM7gi6RbGyHHwDcQaxXT",
-    "9hYD2Xsky8PUpQStvE8UhPaHmhaqxhJth8VuQT5TDTjA",
-    "AAscexBi2v8agKdHwbDgfiKzs9eMbH8JQQB3vzvx5k7X",
-    "9exbLv213SGiHnSppnLYsRVTQqW96BHcMDg9ECZZEBCt",
-    "AvLDKGB7SAqjjs4RhT87GCdBdxyyJHSqcALvWRrQnggd",
-].forEach(function (pk) {
-    var signature = chainiumSdk.crypto.signMessage(networkCode, pk, chainiumSdk.crypto.utf8ToHex('Chainium'));
-    console.log(`"${pk}",\n    "${signature}"`);
-});
-
-[
-    "2C6sgXHMLkwiWeUK4fpyVFa3XG59MBa221pkW7kq2KB8",
-    "3H2V8pM1h4wJEzCfuBHbNBC4w2FvXszKXx6nMEs3mUcC",
-    "CpxNZ1YsPCmVrLwJzP7H88gHthSjBSySgVR3iK1c1VBk",
-    "GzsiWSoVZtDKwGeLELjpqRW618eBsWmFxJhE2wobkzmP",
-    "Ai6m6px88vHv9L3uVtqSGMRoRDatem7xYXdUyAgg7fon",
-    "DdJtweNMxs6vfL3dGUMzZHM3GM7gi6RbGyHHwDcQaxXT",
-    "9hYD2Xsky8PUpQStvE8UhPaHmhaqxhJth8VuQT5TDTjA",
-    "AAscexBi2v8agKdHwbDgfiKzs9eMbH8JQQB3vzvx5k7X",
-    "9exbLv213SGiHnSppnLYsRVTQqW96BHcMDg9ECZZEBCt",
-    "AvLDKGB7SAqjjs4RhT87GCdBdxyyJHSqcALvWRrQnggd",
+    "B6WNNx9oK8qRUU52PpzjXHZuv4NUb3Z33hdju3hhrceS",
+    "BYeryGRWErwcHD6MDPYeUpYBH5Z2viXSDS827hPMmVvU",
+    "3uwbboWnx2BGcWGBASXQ6AAzooi4xKA6fV3psPgvt8Ja",
+    "3UtEGN2Wbmm5jVE3W5iFgeCw9NJ5AueFTqfWcPbdFGMk",
+    "7hYZ9bHuhbJZcGhPzxeRdFYVr24DFMExduLgcqF1U4k8",
+    "Hg4GsWvBDKxdZ76dYmjm6L39JoukD23acQS2KA7eoGLy",
+    "2bnW9tKokbneHvUzZ6SaUkwM8XwudDxdyWr6FnLtCHnT",
+    "BENFVdPfpb8e1jRKZkf7Wmo4Re71qg1Xzfu5cH73JFWG",
+    "ZXXkM41yHhkzb2k5KjeWuGCzYj7AXAfJdMXqKM4TGKq",
+    "BFRzCfhZFBq2mBtSSXz27i3SdNsPh4FtHe9QLeZchySg",
 ].forEach(function (pk) {
     var address = chainiumSdk.crypto.addressFromPrivateKey(pk);
     console.log(`"${pk}", "${address}"`);
+});
+
+console.log('Signatures:');
+[
+    "B6WNNx9oK8qRUU52PpzjXHZuv4NUb3Z33hdju3hhrceS",
+    "BYeryGRWErwcHD6MDPYeUpYBH5Z2viXSDS827hPMmVvU",
+    "3uwbboWnx2BGcWGBASXQ6AAzooi4xKA6fV3psPgvt8Ja",
+    "3UtEGN2Wbmm5jVE3W5iFgeCw9NJ5AueFTqfWcPbdFGMk",
+    "7hYZ9bHuhbJZcGhPzxeRdFYVr24DFMExduLgcqF1U4k8",
+    "Hg4GsWvBDKxdZ76dYmjm6L39JoukD23acQS2KA7eoGLy",
+    "2bnW9tKokbneHvUzZ6SaUkwM8XwudDxdyWr6FnLtCHnT",
+    "BENFVdPfpb8e1jRKZkf7Wmo4Re71qg1Xzfu5cH73JFWG",
+    "ZXXkM41yHhkzb2k5KjeWuGCzYj7AXAfJdMXqKM4TGKq",
+    "BFRzCfhZFBq2mBtSSXz27i3SdNsPh4FtHe9QLeZchySg",
+].forEach(function (pk) {
+    var signature = chainiumSdk.crypto.signMessage(networkCode, pk, chainiumSdk.crypto.utf8ToHex('Chainium'));
+    console.log(`"${pk}",\n    "${signature}"`);
 });
