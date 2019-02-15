@@ -115,7 +115,7 @@ test('generateWallet', () => {
 test('addressFromPrivateKey', () => {
     // ARRANGE
     const privateKey = '3rzY3EENhYrWXzUqNnMEbGUr3iEzzSZrjMwJ1CgQpJpq';
-    const expected = 'CHGmdQdHfLPcMHtzyDzxAkTAQiRvKHFoMPm';
+    const expected = 'CHGmdQdHfLPcMHtzyDzxAkTAQiRvKJrkYv8';
 
     // ACT
     const actual = chainiumCrypto.addressFromPrivateKey(privateKey);

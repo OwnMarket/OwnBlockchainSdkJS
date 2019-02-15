@@ -72,9 +72,9 @@
 
     function chainiumAddress(hexPublicKey) {
         var prefix = '065A';
-        var hash = sha160(sha256(hexPublicKey));
-        var checksum = sha256(sha256(hash)).substr(0, 8); // First 4 bytes.
-        return encode58(prefix + hash + checksum);
+        var publicKeyHashWithPrefix = prefix + sha160(sha256(hexPublicKey));
+        var checksum = sha256(sha256(publicKeyHashWithPrefix)).substr(0, 8); // First 4 bytes.
+        return encode58(publicKeyHashWithPrefix + checksum);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////
