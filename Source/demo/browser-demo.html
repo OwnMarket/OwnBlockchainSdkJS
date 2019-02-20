@@ -46,7 +46,7 @@
 {
     SenderAddress: "CHGeQC23WjThKoDoSbKRuUKvq1EGkBaA5Gg",
     Nonce: 1,
-    Fee: 0.001,
+    ActionFee: 0.001,
     Actions: [
         {
             ActionType: "TransferChx",
@@ -71,6 +71,7 @@
         document.getElementById('private-key').value = 'ZXXkM41yHhkzb2k5KjeWuGCzYj7AXAfJdMXqKM4TGKq';
         document.getElementById('address').value =
             chainiumSdk.crypto.addressFromPrivateKey(document.getElementById('private-key').value);
+        document.getElementById('tx-body').value = document.getElementById('tx-body').value.trim();
 
         function generateWalletButtonClick() {
             var wallet = chainiumSdk.crypto.generateWallet();

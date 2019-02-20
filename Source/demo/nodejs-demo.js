@@ -7,7 +7,7 @@ var tx =
     '{' +
     '    SenderAddress: "CHLsVaYSPJGFi8BNGd6tP1VvB8UdKbVRDKD",' +
     '    Nonce: 1,' +
-    '    Fee: 0.001,' +
+    '    ActionFee: 0.001,' +
     '    Actions: [' +
     '        {' +
     '            ActionType: "TransferChx",' +
