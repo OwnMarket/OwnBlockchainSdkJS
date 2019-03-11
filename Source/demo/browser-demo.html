@@ -9,12 +9,21 @@
             font-size: 16px;
         }
 
+        table {
+            border: none;
+        }
+
         input, textarea {
             width: 50em;
             font-family: Monaco, Consolas, 'Courier New', Courier, monospace;
             font-size: 16px;
             margin-bottom: 1em;
             background-color: #ffffee;
+        }
+
+        #tx-info {
+            font-family: Monaco, Consolas, 'Courier New', Courier, monospace;
+            font-size: 16px;
         }
 
         button {
@@ -42,24 +51,32 @@
 
     <label for="tx-body">Tx:</label>
     <br>
-    <textarea name="tx-body" id="tx-body" cols="100" rows="20">
+    <table cellspacing="0" cellpadding="0">
+        <tr>
+            <td>
+                <textarea name="tx-body" id="tx-body" cols="100" rows="20" onchange="showTxInfo()" onkeyup="showTxInfo()">
 {
-    SenderAddress: "CHGeQC23WjThKoDoSbKRuUKvq1EGkBaA5Gg",
-    Nonce: 1,
-    ActionFee: 0.001,
-    Actions: [
+    "senderAddress": "CHGeQC23WjThKoDoSbKRuUKvq1EGkBaA5Gg",
+    "nonce": 1,
+    "actionFee": 0.001,
+    "actions": [
         {
-            ActionType: "TransferChx",
-            ActionData: {
-                RecipientAddress: "CHfDeuB1y1eJnWd6aWfYaRvpS9Qgrh1eqe7",
-                Amount: 1.5
+            "actionType": "TransferChx",
+            "actionData": {
+                "recipientAddress": "CHfDeuB1y1eJnWd6aWfYaRvpS9Qgrh1eqe7",
+                "amount": 1.5
             }
         }
     ]
 }
-    </textarea>
-    <button onclick="signTxButtonClick()">Sign Tx</button>
-    <br>
+                </textarea>
+                <button onclick="signTxButtonClick()">Sign Tx</button>
+            </td>
+            <td>
+                <span id="tx-info"></span>
+            </td>
+        </tr>
+    </table>
 
     <label for="tx-signature">Signed Tx:</label>
     <br>
@@ -82,6 +99,29 @@
         function deriveAddressFromPrivateKeyButtonClick() {
             document.getElementById('address').value =
                 chainiumSdk.crypto.addressFromPrivateKey(document.getElementById('private-key').value);
+        }
+
+        function showTxInfo() {
+            document.getElementById('tx-info').innerText = '';
+            var txInfo = '';
+
+            try {
+                var tx = JSON.parse(document.getElementById('tx-body').value);
+                if (tx && tx.nonce && tx.nonce >= 0 && tx.actions && tx.actions.length > 0) {
+                    tx.actions.forEach((a, i) => {
+                        if (a.actionType && (a.actionType === 'CreateAsset' || a.actionType === 'CreateAccount')) {
+                            var actionNumber = i + 1;
+                            var derivedHash = chainiumSdk.crypto.deriveHash(
+                                document.getElementById('address').value, tx.nonce, actionNumber);
+                            txInfo += `Action ${actionNumber}: ${derivedHash}\n`;
+                        }
+                    });
+                }
+            } catch (error) {
+                txInfo = error;
+            }
+
+            document.getElementById('tx-info').innerText = txInfo;
         }
 
         function signTxButtonClick() {
