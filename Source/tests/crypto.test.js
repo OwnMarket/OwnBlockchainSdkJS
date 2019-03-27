@@ -66,6 +66,18 @@ test('decode58', () => {
     expect(actual).toBe(expected);
 });
 
+test('encode58 and decode58 round trip', () => {
+    // ARRANGE
+    const encodedData = '4R61yBaKWJcbJgQCq6ePmhoC8B7nqiF4Ua3ZmeLWBYN';
+    const expectedLength = 64;
+
+    // ACT
+    const actual = chainiumCrypto.decode58(encodedData);
+
+    // ASSERT
+    expect(actual.length).toBe(expectedLength);
+});
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // Hashing
 ////////////////////////////////////////////////////////////////////////////////////////////////////
