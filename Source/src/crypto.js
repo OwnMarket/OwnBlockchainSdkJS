@@ -40,19 +40,27 @@
     ////////////////////////////////////////////////////////////////////////////////////////////////////
 
     function sha256(hexData) {
-        return CryptoJS.enc.Hex.stringify(
+        var result = CryptoJS.enc.Hex.stringify(
             CryptoJS.SHA256(
                 CryptoJS.enc.Hex.parse(hexData)
-            )
+            )        
         );
+        if (result.length != 64)
+            throw `[SHA256] invalid hex encoded length: Expected 64, got ${result.length}`;
+
+        return result;
     }
 
     function sha512(hexData) {
-        return CryptoJS.enc.Hex.stringify(
+        var result = CryptoJS.enc.Hex.stringify(
             CryptoJS.SHA512(
                 CryptoJS.enc.Hex.parse(hexData)
             )
         );
+        if (result.length != 128)
+            throw `[SHA512] invalid hex encoded length: Expected 128, got ${result.length}`;
+
+    return result;
     }
 
     function sha160(hexData) {
@@ -64,7 +72,10 @@
     }
 
     function deriveHash(address, nonce, txActionNumber) {
-        var addressHex = decode58(address).padStart(52, "0");
+        var addressHex = decode58(address)
+        if (addressHex.length != 52)
+            throw "Invalid blockchain address";
+
         var nonceHex = nonce.toString(16).padStart(16, "0");
         var txActionNumberHex = txActionNumber.toString(16).padStart(4, "0");
         return hash(addressHex + nonceHex + txActionNumberHex);
@@ -86,12 +97,15 @@
     function generateWallet() {
         var keyPair = ec.genKeyPair();
         return {
-            privateKey: encode58(keyPair.getPrivate('hex')),
+            privateKey: encode58(keyPair.getPrivate('hex').padStart(64, "0")),
             address: chainiumAddress(keyPair.getPublic('hex'))
         };
     }
 
     function addressFromPrivateKey(privateKey) {
+        var decodedPrivateKey = decode58(privateKey)
+        if (decodedPrivateKey.length != 64)
+            throw "Invalid private key"
         var keyPair = ec.keyFromPrivate(decode58(privateKey), 'hex');
         return chainiumAddress(keyPair.getPublic('hex'));
     }
