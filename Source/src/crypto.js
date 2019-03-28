@@ -74,7 +74,7 @@
     function deriveHash(address, nonce, txActionNumber) {
         var addressHex = decode58(address)
         if (addressHex.length != 52)
-            throw "Invalid blockchain address";
+            throw `Invalid blockchain address: ${addressHex}`;
 
         var nonceHex = nonce.toString(16).padStart(16, "0");
         var txActionNumberHex = txActionNumber.toString(16).padStart(4, "0");
