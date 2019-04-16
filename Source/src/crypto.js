@@ -165,6 +165,17 @@
         return generateMasterNodeFromMnemonic(mnemonic, passphrase);
     }
 
+    const bip44RegistrationIndex = 1234567;
+    function generateHdWalletFromSeed(seed, index) {
+        var masterNode = generateMasterNodeFromSeed(seed);
+        var childNode = masterNode.derivePath(`m/44'/${bip44RegistrationIndex}'/0'/0/${index}`);
+        var keyPair = ec.keyFromPrivate(childNode.privateKey);
+        return {
+            privateKey: encode58(keyPair.getPrivate('hex').padStart(64, "0")),
+            address: chainiumAddress(keyPair.getPublic('hex'))
+        };
+    }
+
     module.exports = {
         // Encoding
         utf8ToHex: utf8ToHex,
@@ -189,5 +200,6 @@
         generateMasterNodeFromSeed: generateMasterNodeFromSeed,
         generateMasterNodeFromMnemonic: generateMasterNodeFromMnemonic,
         generateMasterNode: generateMasterNode,
+        generateHdWalletFromSeed: generateHdWalletFromSeed
     };
 }());
