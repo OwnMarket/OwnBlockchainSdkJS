@@ -97,12 +97,16 @@
 
     var ec = new EC('secp256k1');
 
-    function generateWallet() {
-        var keyPair = ec.genKeyPair();
+    function walletFromKeyPair(keyPair) {
         return {
             privateKey: encode58(keyPair.getPrivate('hex').padStart(64, "0")),
             address: chainiumAddress(keyPair.getPublic('hex'))
         };
+    }
+
+    function generateWallet() {
+        var keyPair = ec.genKeyPair();
+        return walletFromKeyPair(keyPair);
     }
 
     function addressFromPrivateKey(privateKey) {
@@ -133,8 +137,7 @@
 
     function generateMnemonic() {
         var  randomBytes = Crypto.randomBytes(32); // 256 bits
-        var mnemonic = Bip39.entropyToMnemonic(randomBytes.toString('hex'), worldlistEN);
-        return  mnemonic;// 24 word phrase
+        return Bip39.entropyToMnemonic(randomBytes.toString('hex'), worldlistEN); // 24 word phrase
     }
 
     function generateSeedFromMnemonic(mnemonic, passphrase) {
@@ -170,10 +173,7 @@
         var masterNode = generateMasterNodeFromSeed(seed);
         var childNode = masterNode.derivePath(`m/44'/${bip44RegistrationIndex}'/0'/0/${index}`);
         var keyPair = ec.keyFromPrivate(childNode.privateKey);
-        return {
-            privateKey: encode58(keyPair.getPrivate('hex').padStart(64, "0")),
-            address: chainiumAddress(keyPair.getPublic('hex'))
-        };
+        return walletFromKeyPair(keyPair);
     }
 
     module.exports = {
