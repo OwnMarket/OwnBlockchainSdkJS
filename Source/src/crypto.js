@@ -4,6 +4,9 @@
     var CryptoJS = require('crypto-js');
     var Base58 = require('bs58');
     var EC = require('elliptic').ec;
+    var Bip32 = require('bip32');
+    var Bip39 = require('bip39');
+    var Crypto = require('crypto');
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     // Encoding
@@ -43,7 +46,7 @@
         var result = CryptoJS.enc.Hex.stringify(
             CryptoJS.SHA256(
                 CryptoJS.enc.Hex.parse(hexData)
-            )        
+            )
         );
         if (result.length != 64)
             throw `[SHA256] invalid hex encoded length: Expected 64, got ${result.length}`;
@@ -122,6 +125,46 @@
         return encode58(signatureBytes);
     }
 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Hierachical Deterministic Cryptography
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    var worldlistEN = require('./english.json');
+
+    function generateMnemonic() {
+        var  randomBytes = Crypto.randomBytes(32); // 256 bits
+        var mnemonic = Bip39.entropyToMnemonic(randomBytes.toString('hex'), worldlistEN);
+        return  mnemonic;// 24 word phrase
+    }
+
+    function generateSeedFromMnemonic(mnemonic, passphrase) {
+        return Bip39.mnemonicToSeedSync(mnemonic, passphrase).toString('hex');
+    }
+
+    function generateSeed(passphrase) {
+        var mnemonic = generateMnemonic();
+        return generateSeedFromMnemonic(mnemonic, passphrase);
+    }
+
+    function generateMasterNodeFromSeed(seed) {
+        return Bip32.fromSeed(Buffer.from(seed, 'hex'));
+    }
+
+    function generateMasterNodeFromMnemonic(mnemonic, passphrase) {
+        if (Bip39.validateMnemonic(mnemonic)) {
+            var seed = generateSeedFromMnemonic(mnemonic, passphrase);
+            return generateMasterNodeFromSeed(seed);
+        }
+        else {
+            throw 'Invalid mnemonic';
+        }
+    }
+
+    function generateMasterNode(passphrase) {
+        var mnemonic = generateMnemonic();
+        return generateMasterNodeFromMnemonic(mnemonic, passphrase);
+    }
+
     module.exports = {
         // Encoding
         utf8ToHex: utf8ToHex,
@@ -137,6 +180,14 @@
         // Signing
         generateWallet: generateWallet,
         addressFromPrivateKey: addressFromPrivateKey,
-        signMessage: signMessage
+        signMessage: signMessage,
+
+        // Hd crypto
+        generateMnemonic: generateMnemonic,
+        generateSeedFromMnemonic: generateSeedFromMnemonic,
+        generateSeed: generateSeed,
+        generateMasterNodeFromSeed: generateMasterNodeFromSeed,
+        generateMasterNodeFromMnemonic: generateMasterNodeFromMnemonic,
+        generateMasterNode: generateMasterNode,
     };
 }());
