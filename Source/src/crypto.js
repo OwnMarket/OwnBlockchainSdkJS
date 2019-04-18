@@ -135,13 +135,22 @@
 
     var worldlistEN = require('./english.json');
 
+    function validateMnemonic(mnemonic) {
+        return Bip39.validateMnemonic(mnemonic, worldlistEN);
+    }
+
     function generateMnemonic() {
         var  randomBytes = Crypto.randomBytes(32); // 256 bits
         return Bip39.entropyToMnemonic(randomBytes.toString('hex'), worldlistEN); // 24 word phrase
     }
 
     function generateSeedFromMnemonic(mnemonic, passphrase) {
-        return Bip39.mnemonicToSeedSync(mnemonic, passphrase).toString('hex');
+        if (validateMnemonic(mnemonic)) {
+            return Bip39.mnemonicToSeedSync(mnemonic, passphrase).toString('hex');
+        }
+        else {
+            throw 'Invalid mnemonic';
+        }
     }
 
     function generateSeed(passphrase) {
@@ -154,7 +163,7 @@
     }
 
     function generateMasterNodeFromMnemonic(mnemonic, passphrase) {
-        if (Bip39.validateMnemonic(mnemonic)) {
+        if (validateMnemonic(mnemonic)) {
             var seed = generateSeedFromMnemonic(mnemonic, passphrase);
             return generateMasterNodeFromSeed(seed);
         }
