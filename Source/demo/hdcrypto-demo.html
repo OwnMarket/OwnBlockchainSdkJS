@@ -106,7 +106,7 @@
         function restoreWallets() {
             var seed = document.getElementById('restore-seed').value;
             var walletCount = parseInt(document.getElementById('restore-wallet-count').value);
-            var wallets = chainiumSdk.crypto.restoreWalletsFromSeed(seed, 1, walletCount);
+            var wallets = chainiumSdk.crypto.restoreWalletsFromSeed(seed, walletCount);
             document.getElementById('restore-wallets').value = JSON.stringify(wallets);
         }
 

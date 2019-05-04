@@ -145,7 +145,8 @@
     // Hierachical Deterministic Cryptography
     ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    var worldlistEN = require('./english.json');
+    const worldlistEN = require('./english.json');
+    const bip44RegistrationIndex = 25718;
 
     function validateMnemonic(mnemonic) {
         return Bip39.validateMnemonic(mnemonic, worldlistEN);
@@ -189,22 +190,42 @@
         return generateMasterNodeFromMnemonic(mnemonic, passphrase);
     }
 
-    const bip44RegistrationIndex = 25718;
     function generateWalletFromSeed(seed, index) {
+        if (index < 1) throw 'HD wallets must be derived with index > 0';
         var masterNode = generateMasterNodeFromSeed(seed);
         var childNode = masterNode.derivePath(`m/44'/${bip44RegistrationIndex}'/0'/0/${index}`);
         var keyPair = ec.keyFromPrivate(childNode.privateKey);
         return walletFromKeyPair(keyPair);
     }
 
-    function restoreWalletsFromSeed(seed, startIndex, walletCount) {
+    function restoreWalletsFromSeed(seed, walletCount) {
         var wallets = [];
-        for (let i = startIndex; i < startIndex + walletCount; i ++) {
+        for (let i = 1; i <= walletCount; i ++) {
             var wallet = generateWalletFromSeed(seed, i);
             wallets.push(wallet);
         }
 
         return wallets;
+    }
+
+    function generateWalletKeystore(mnemonic, password) {
+        if (validateMnemonic(mnemonic)) {
+            return encrypt(mnemonic, password);
+        }
+        else {
+            throw 'Invalid mnemonic';
+        }
+    }
+
+    function restoreWalletsFromKeyStore(keyStoreEncrypted, password, walletCount) {
+        var mnemonic = decrypt(keyStoreEncrypted, password);
+        if (validateMnemonic(mnemonic)) {
+            var seed = generateSeedFromMnemonic(mnemonic, password);
+            return restoreWalletsFromSeed(seed, walletCount);
+        }
+        else {
+            throw 'Invalid keystore';
+        }
     }
 
     module.exports = {
@@ -231,11 +252,9 @@
         // Hd crypto
         generateMnemonic: generateMnemonic,
         generateSeedFromMnemonic: generateSeedFromMnemonic,
-        generateSeed: generateSeed,
-        generateMasterNodeFromSeed: generateMasterNodeFromSeed,
-        generateMasterNodeFromMnemonic: generateMasterNodeFromMnemonic,
-        generateMasterNode: generateMasterNode,
         generateWalletFromSeed: generateWalletFromSeed,
-        restoreWalletsFromSeed: restoreWalletsFromSeed
+        restoreWalletsFromSeed: restoreWalletsFromSeed,
+        generateWalletKeystore: generateWalletKeystore,
+        restoreWalletsFromKeyStore: restoreWalletsFromKeyStore
     };
 }());
