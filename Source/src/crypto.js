@@ -91,8 +91,8 @@
         if (addressHex.length != 52)
             throw `Invalid blockchain address: ${addressHex}`;
 
-        var nonceHex = nonce.toString(16).padStart(16, "0");
-        var txActionNumberHex = txActionNumber.toString(16).padStart(4, "0");
+        var nonceHex = nonce.toString(16).padStart(16, '0');
+        var txActionNumberHex = txActionNumber.toString(16).padStart(4, '0');
         return hash(addressHex + nonceHex + txActionNumberHex);
     }
 
@@ -111,7 +111,7 @@
 
     function walletFromKeyPair(keyPair) {
         return {
-            privateKey: encode58(keyPair.getPrivate('hex').padStart(64, "0")),
+            privateKey: encode58(keyPair.getPrivate('hex').padStart(64, '0')),
             address: chainiumAddress(keyPair.getPublic('hex'))
         };
     }
@@ -124,7 +124,7 @@
     function addressFromPrivateKey(privateKey) {
         var decodedPrivateKey = decode58(privateKey)
         if (decodedPrivateKey.length != 64)
-            throw "Invalid private key"
+            throw 'Invalid private key'
         var keyPair = ec.keyFromPrivate(decode58(privateKey), 'hex');
         return chainiumAddress(keyPair.getPublic('hex'));
     }
@@ -132,8 +132,8 @@
     function signData(privateKey, dataToSign) {
         var signature = ec.sign(dataToSign, decode58(privateKey), 'hex', {canonical: true});
         var signatureBytes =
-            signature.r.toString('hex').padStart(64, "0")   // R
-            + signature.s.toString('hex').padStart(64, "0") // S
+            signature.r.toString('hex').padStart(64, '0')   // R
+            + signature.s.toString('hex').padStart(64, '0') // S
             + '0' + signature.recoveryParam                 // V
         return encode58(signatureBytes);
     }
