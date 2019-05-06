@@ -129,16 +129,25 @@
         return chainiumAddress(keyPair.getPublic('hex'));
     }
 
-    function signMessage(networkCode, privateKey, hexMessage) {
-        var messageHash = sha256(hexMessage);
-        var networkCodeHash = sha256(utf8ToHex(networkCode));
-        var dataToSign = sha256(messageHash + networkCodeHash);
+    function signData(privateKey, dataToSign) {
         var signature = ec.sign(dataToSign, decode58(privateKey), 'hex', {canonical: true});
         var signatureBytes =
             signature.r.toString('hex').padStart(64, "0")   // R
             + signature.s.toString('hex').padStart(64, "0") // S
             + '0' + signature.recoveryParam                 // V
         return encode58(signatureBytes);
+    }
+
+    function signMessage(networkCode, privateKey, hexMessage) {
+        var messageHash = sha256(hexMessage);
+        var networkId = sha256(utf8ToHex(networkCode));
+        var dataToSign = sha256(messageHash + networkId);
+        return signData(privateKey, dataToSign);
+    }
+
+    function signPlainText(privateKey, textMessage) {
+        var dataToSign = sha256(utf8ToHex(textMessage));
+        return signData(privateKey, dataToSign);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -248,6 +257,7 @@
         generateWallet: generateWallet,
         addressFromPrivateKey: addressFromPrivateKey,
         signMessage: signMessage,
+        signPlainText: signPlainText,
 
         // Hd crypto
         generateMnemonic: generateMnemonic,
