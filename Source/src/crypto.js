@@ -142,19 +142,19 @@
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////
-    // Hierachical Deterministic Cryptography
+    // Hierarchical Deterministic Cryptography
     ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    const worldlistEN = require('./english.json');
+    const wordsEN = require('./english.json');
     const bip44RegistrationIndex = 25718;
 
     function validateMnemonic(mnemonic) {
-        return Bip39.validateMnemonic(mnemonic, worldlistEN);
+        return Bip39.validateMnemonic(mnemonic, wordsEN);
     }
 
     function generateMnemonic() {
         var  randomBytes = Crypto.randomBytes(32); // 256 bits
-        return Bip39.entropyToMnemonic(randomBytes.toString('hex'), worldlistEN); // 24 word phrase
+        return Bip39.entropyToMnemonic(randomBytes.toString('hex'), wordsEN); // 24 word phrase
     }
 
     function generateSeedFromMnemonic(mnemonic, passphrase) {
