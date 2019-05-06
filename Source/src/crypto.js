@@ -258,7 +258,7 @@
         signMessage: signMessage,
         signPlainText: signPlainText,
 
-        // Hd crypto
+        // HD Crypto
         generateMnemonic: generateMnemonic,
         generateSeedFromMnemonic: generateSeedFromMnemonic,
         generateWalletFromSeed: generateWalletFromSeed,
