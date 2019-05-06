@@ -207,16 +207,6 @@
         return walletFromKeyPair(keyPair);
     }
 
-    function restoreWalletsFromSeed(seed, walletCount) {
-        var wallets = [];
-        for (let i = 1; i <= walletCount; i ++) {
-            var wallet = generateWalletFromSeed(seed, i);
-            wallets.push(wallet);
-        }
-
-        return wallets;
-    }
-
     function generateWalletKeystore(mnemonic, password) {
         if (validateMnemonic(mnemonic)) {
             return encrypt(mnemonic, password);
@@ -226,15 +216,24 @@
         }
     }
 
-    function restoreWalletsFromKeyStore(keyStoreEncrypted, password, walletCount) {
+    function generateSeedFromKeyStore(keyStoreEncrypted, password) {
         var mnemonic = decrypt(keyStoreEncrypted, password);
         if (validateMnemonic(mnemonic)) {
-            var seed = generateSeedFromMnemonic(mnemonic, password);
-            return restoreWalletsFromSeed(seed, walletCount);
+            return generateSeedFromMnemonic(mnemonic, password);
         }
         else {
             throw 'Invalid keystore';
         }
+    }
+
+    function restoreWalletsFromSeed(seed, walletCount) {
+        var wallets = [];
+        for (let i = 1; i <= walletCount; i ++) {
+            var wallet = generateWalletFromSeed(seed, i);
+            wallets.push(wallet);
+        }
+
+        return wallets;
     }
 
     module.exports = {
@@ -263,8 +262,8 @@
         generateMnemonic: generateMnemonic,
         generateSeedFromMnemonic: generateSeedFromMnemonic,
         generateWalletFromSeed: generateWalletFromSeed,
-        restoreWalletsFromSeed: restoreWalletsFromSeed,
         generateWalletKeystore: generateWalletKeystore,
-        restoreWalletsFromKeyStore: restoreWalletsFromKeyStore
+        generateSeedFromKeyStore: generateSeedFromKeyStore,
+        restoreWalletsFromSeed: restoreWalletsFromSeed
     };
 }());
