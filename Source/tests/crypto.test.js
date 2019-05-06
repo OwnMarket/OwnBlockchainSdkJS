@@ -68,14 +68,15 @@ test('decode58', () => {
 
 test('encode58 and decode58 round trip', () => {
     // ARRANGE
-    const encodedData = '4R61yBaKWJcbJgQCq6ePmhoC8B7nqiF4Ua3ZmeLWBYN';
+    const expected = '00dffa2420d21220f24d6598bcedadb45328d08358fe8abdd98026705b7f1c5b';
     const expectedLength = 64;
 
     // ACT
-    const actual = chainiumCrypto.decode58(encodedData);
+    const actual = chainiumCrypto.decode58(chainiumCrypto.encode58(expected));
 
     // ASSERT
     expect(actual.length).toBe(expectedLength);
+    expect(actual).toBe(expected);
 });
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
