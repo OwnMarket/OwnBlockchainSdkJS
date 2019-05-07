@@ -29,7 +29,7 @@ Chainium SDK for JS can be used in two scenarios:
 
 ### NPM Package
 
-Add package to the project:
+Add [package](https://www.npmjs.com/package/own-blockchain-sdk) to the project:
 
 ```bash
 $ npm install own-blockchain-sdk
@@ -68,7 +68,7 @@ To build a standalone library for the browser, [Browserify](http://browserify.or
 $ sudo npm install -g browserify
 ```
 
-Build is started using the `build.sh` script
+Build is started using the `build.sh` script (`build.bat` for Windows):
 
 ```bash
 $ ./build.sh
