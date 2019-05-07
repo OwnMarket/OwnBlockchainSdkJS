@@ -1,5 +1,5 @@
 (function () {
     'use strict';
 
-    window.chainiumSdk = require('./index');
+    window.ownBlockchainSdk = require('./index');
 }());

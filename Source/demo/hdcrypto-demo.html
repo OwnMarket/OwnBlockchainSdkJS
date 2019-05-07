@@ -71,24 +71,24 @@
     <button onclick="restoreWallets()">Restore Wallets</button>
     <br>
 
-    <script src="../dist/chainium-sdk.js"></script>
+    <script src="../dist/own-blockchain-sdk.js"></script>
     <script>
         document.getElementById('passphrase').value = 'password';
         document.getElementById('wallet-count').value = 3;
         document.getElementById('restore-wallet-count').value = 3;
 
         function generateMnemonic() {
-            var mnemonic = chainiumSdk.crypto.generateMnemonic();
+            var mnemonic = ownBlockchainSdk.crypto.generateMnemonic();
             document.getElementById('mnemonic').value = mnemonic;
             var passphrase = document.getElementById('passphrase').value;
-            var seed = chainiumSdk.crypto.generateSeedFromMnemonic(mnemonic, passphrase);
+            var seed = ownBlockchainSdk.crypto.generateSeedFromMnemonic(mnemonic, passphrase);
             document.getElementById('bip39-seed').value = seed;
         }
 
         function generateSeed() {
             var mnemonic = document.getElementById('mnemonic').value;
             var passphrase = document.getElementById('passphrase').value;
-            var seed = chainiumSdk.crypto.generateSeedFromMnemonic(mnemonic, passphrase);
+            var seed = ownBlockchainSdk.crypto.generateSeedFromMnemonic(mnemonic, passphrase);
             document.getElementById('bip39-seed').value = seed;
         }
 
@@ -97,7 +97,7 @@
             var walletCount = parseInt(document.getElementById('wallet-count').value);
             var wallets = [];
             for (let i = 1; i <= walletCount; i ++) {
-                let wallet = chainiumSdk.crypto.generateWalletFromSeed(seed, i);
+                let wallet = ownBlockchainSdk.crypto.generateWalletFromSeed(seed, i);
                 wallets.push(wallet);
             }
             document.getElementById('wallets').value = JSON.stringify(wallets);
@@ -106,7 +106,7 @@
         function restoreWallets() {
             var seed = document.getElementById('restore-seed').value;
             var walletCount = parseInt(document.getElementById('restore-wallet-count').value);
-            var wallets = chainiumSdk.crypto.restoreWalletsFromSeed(seed, walletCount);
+            var wallets = ownBlockchainSdk.crypto.restoreWalletsFromSeed(seed, walletCount);
             document.getElementById('restore-wallets').value = JSON.stringify(wallets);
         }
 

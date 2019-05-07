@@ -1,6 +1,7 @@
-var chainiumSdk = require('../src/index');
+var ownBlockchainSdk = require('../src/index');
 var networkCode = 'UNIT_TESTS';
-var wallet = chainiumSdk.crypto.generateWallet();
+var wallet = ownBlockchainSdk.crypto.generateWallet();
+
 console.log(wallet);
 
 var tx =
@@ -19,11 +20,11 @@ var tx =
     '    ]' +
     '}';
 
-var txRaw = chainiumSdk.crypto.utf8ToHex(tx);
-var txBase64 = chainiumSdk.crypto.encode64(txRaw);
+var txRaw = ownBlockchainSdk.crypto.utf8ToHex(tx);
+var txBase64 = ownBlockchainSdk.crypto.encode64(txRaw);
 
 console.log('Tx:', txBase64);
-console.log(chainiumSdk.crypto.signMessage(networkCode, wallet.privateKey, txRaw));
+console.log(ownBlockchainSdk.crypto.signMessage(networkCode, wallet.privateKey, txRaw));
 
 console.log('Addresses:');
 [
@@ -38,7 +39,7 @@ console.log('Addresses:');
     "ZXXkM41yHhkzb2k5KjeWuGCzYj7AXAfJdMXqKM4TGKq",
     "BFRzCfhZFBq2mBtSSXz27i3SdNsPh4FtHe9QLeZchySg",
 ].forEach(function (pk) {
-    var address = chainiumSdk.crypto.addressFromPrivateKey(pk);
+    var address = ownBlockchainSdk.crypto.addressFromPrivateKey(pk);
     console.log(`"${pk}", "${address}"`);
 });
 
@@ -55,6 +56,6 @@ console.log('Signatures:');
     "ZXXkM41yHhkzb2k5KjeWuGCzYj7AXAfJdMXqKM4TGKq",
     "BFRzCfhZFBq2mBtSSXz27i3SdNsPh4FtHe9QLeZchySg",
 ].forEach(function (pk) {
-    var signature = chainiumSdk.crypto.signMessage(networkCode, pk, chainiumSdk.crypto.utf8ToHex('Chainium'));
+    var signature = ownBlockchainSdk.crypto.signMessage(networkCode, pk, ownBlockchainSdk.crypto.utf8ToHex('Chainium'));
     console.log(`"${pk}",\n    "${signature}"`);
 });

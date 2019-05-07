@@ -1,12 +1,24 @@
 {
-  "name": "chainium-sdk",
-  "version": "0.3.3",
-  "description": "Chainium SDK for JavaScript",
+  "name": "own-blockchain-sdk",
+  "version": "1.0.0",
+  "description": "Own Blockchain SDK for JavaScript",
   "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/OwnMarket/OwnBlockchainSdkJS"
   },
+  "main": "src/index.js",
+  "files": [
+    "/src",
+    "!/src/browser.js"
+  ],
+  "keywords": [
+    "chainium",
+    "own",
+    "blockchain",
+    "crypto",
+    "sdk"
+  ],
   "scripts": {
     "test": "jest"
   },

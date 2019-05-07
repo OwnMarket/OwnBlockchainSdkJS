@@ -96,7 +96,7 @@
         return hash(addressHex + nonceHex + txActionNumberHex);
     }
 
-    function chainiumAddress(hexPublicKey) {
+    function blockchainAddress(hexPublicKey) {
         var prefix = '065A';
         var publicKeyHashWithPrefix = prefix + sha160(sha256(hexPublicKey));
         var checksum = sha256(sha256(publicKeyHashWithPrefix)).substr(0, 8); // First 4 bytes.
@@ -112,7 +112,7 @@
     function walletFromKeyPair(keyPair) {
         return {
             privateKey: encode58(keyPair.getPrivate('hex').padStart(64, '0')),
-            address: chainiumAddress(keyPair.getPublic('hex'))
+            address: blockchainAddress(keyPair.getPublic('hex'))
         };
     }
 
@@ -126,7 +126,7 @@
         if (decodedPrivateKey.length != 64)
             throw 'Invalid private key'
         var keyPair = ec.keyFromPrivate(decode58(privateKey), 'hex');
-        return chainiumAddress(keyPair.getPublic('hex'));
+        return blockchainAddress(keyPair.getPublic('hex'));
     }
 
     function signData(privateKey, dataToSign) {

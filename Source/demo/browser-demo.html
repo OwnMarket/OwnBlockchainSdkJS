@@ -83,23 +83,23 @@
     <br>
     <textarea name="tx-signature" id="tx-signature" cols="100" rows="10"></textarea>
 
-    <script src="../dist/chainium-sdk.js"></script>
+    <script src="../dist/own-blockchain-sdk.js"></script>
     <script>
         document.getElementById('network-code').value = 'OWN_PUBLIC_BLOCKCHAIN_DEVNET';
         document.getElementById('private-key').value = 'ZXXkM41yHhkzb2k5KjeWuGCzYj7AXAfJdMXqKM4TGKq';
         document.getElementById('address').value =
-            chainiumSdk.crypto.addressFromPrivateKey(document.getElementById('private-key').value);
+            ownBlockchainSdk.crypto.addressFromPrivateKey(document.getElementById('private-key').value);
         document.getElementById('tx-body').value = document.getElementById('tx-body').value.trim();
 
         function generateWalletButtonClick() {
-            var wallet = chainiumSdk.crypto.generateWallet();
+            var wallet = ownBlockchainSdk.crypto.generateWallet();
             document.getElementById('private-key').value = wallet.privateKey;
             document.getElementById('address').value = wallet.address;
         }
 
         function deriveAddressFromPrivateKeyButtonClick() {
             document.getElementById('address').value =
-                chainiumSdk.crypto.addressFromPrivateKey(document.getElementById('private-key').value);
+                ownBlockchainSdk.crypto.addressFromPrivateKey(document.getElementById('private-key').value);
         }
 
         function showTxInfo() {
@@ -112,7 +112,7 @@
                     tx.actions.forEach((a, i) => {
                         if (a.actionType && (a.actionType === 'CreateAsset' || a.actionType === 'CreateAccount')) {
                             var actionNumber = i + 1;
-                            var derivedHash = chainiumSdk.crypto.deriveHash(
+                            var derivedHash = ownBlockchainSdk.crypto.deriveHash(
                                 document.getElementById('address').value, tx.nonce, actionNumber);
                             txInfo += `Action ${actionNumber}: ${derivedHash}\n`;
                         }
@@ -126,12 +126,12 @@
         }
 
         function signTxButtonClick() {
-            var tx = chainiumSdk.crypto.encode64(
-                chainiumSdk.crypto.utf8ToHex(document.getElementById('tx-body').value));
-            var signature = chainiumSdk.crypto.signMessage(
+            var tx = ownBlockchainSdk.crypto.encode64(
+                ownBlockchainSdk.crypto.utf8ToHex(document.getElementById('tx-body').value));
+            var signature = ownBlockchainSdk.crypto.signMessage(
                 document.getElementById('network-code').value,
                 document.getElementById('private-key').value,
-                chainiumSdk.crypto.decode64(tx));
+                ownBlockchainSdk.crypto.decode64(tx));
             document.getElementById('tx-signature').value = JSON.stringify({
                 tx: tx,
                 signature: signature

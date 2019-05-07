@@ -3,5 +3,5 @@
 SCRIPT_DIR="${0%/*}"
 
 pushd "$SCRIPT_DIR"
-browserify ./src/browser.js -o ./dist/chainium-sdk.js
+browserify ./src/browser.js -o ./dist/own-blockchain-sdk.js
 popd
