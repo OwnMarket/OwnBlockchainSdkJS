@@ -163,3 +163,18 @@ test('signPlainText', () => {
     // ASSERT
     expect(actual).toBe(expected);
 });
+
+test('verifyPlainTextSignature', () => {
+    // ARRANGE
+    const wallet = chainiumCrypto.generateWallet();
+    const privateKey = wallet.privateKey;
+    const expected = chainiumCrypto.addressFromPrivateKey(privateKey);
+    const txt = 'Chainium';
+    const signature = chainiumCrypto.signPlainText(privateKey, txt);
+
+    // ACT
+    const actual = chainiumCrypto.verifyPlainTextSignature(signature, txt);
+
+    // ASSERT
+    expect(actual).toBe(expected);
+});
