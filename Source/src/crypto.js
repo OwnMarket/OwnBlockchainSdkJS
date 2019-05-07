@@ -161,7 +161,7 @@
         var v = parseInt(hexSignature.substr(128, 2));
 
         // f(private, f(public, message)) === f(public, f(private, message)) === message
-        var msg = ec.keyFromPrivate(dataToVerify, "hex").getPrivate().toString(10);
+        var msg = ec.keyFromPrivate(dataToVerify, 'hex').getPrivate().toString(10);
         var publicKey = ec.recoverPubKey(msg, ecSignature, v, 'hex').encode('hex');
 
         return blockchainAddress(publicKey);
