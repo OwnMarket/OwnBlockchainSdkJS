@@ -172,8 +172,8 @@
     // Hierarchical Deterministic Cryptography
     ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    const wordsEN = require('./english.json');
-    const bip44RegistrationIndex = 25718;
+    var wordsEN = require('./english.json');
+    var bip44RegistrationIndex = 25718;
 
     function validateMnemonic(mnemonic) {
         return Bip39.validateMnemonic(mnemonic, wordsEN);
