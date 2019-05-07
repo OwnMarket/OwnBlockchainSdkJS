@@ -1,4 +1,4 @@
-# ChainiumSdkJS
+# OwnBlockchainSdkJS
 
 Own Blockchain SDK for JavaScript
 
@@ -21,7 +21,7 @@ $ npm test
 
 ## Usage
 
-Chainium SDK for JS can be used in two scenarios:
+Own Blockchain SDK for JS can be used in two scenarios:
 
 - `own-blockchain-sdk` npm package
 - `own-blockchain-sdk.js` standalone library
