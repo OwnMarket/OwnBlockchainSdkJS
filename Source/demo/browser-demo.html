@@ -55,21 +55,6 @@
         <tr>
             <td>
                 <textarea name="tx-body" id="tx-body" cols="100" rows="20" onchange="showTxInfo()" onkeyup="showTxInfo()">
-{
-    "senderAddress": "CHGeQC23WjThKoDoSbKRuUKvq1EGkBaA5Gg",
-    "nonce": 1,
-    "expirationTime": 0,
-    "actionFee": 0.001,
-    "actions": [
-        {
-            "actionType": "TransferChx",
-            "actionData": {
-                "recipientAddress": "CHexBLbHxh8DqnDcFjLRkaYCneiG9h7XVWq",
-                "amount": 1.5
-            }
-        }
-    ]
-}
                 </textarea>
                 <button onclick="signTxButtonClick()">Sign Tx</button>
             </td>
@@ -81,7 +66,7 @@
 
     <label for="tx-signature">Signed Tx:</label>
     <br>
-    <textarea name="tx-signature" id="tx-signature" cols="100" rows="10"></textarea>
+    <textarea name="tx-signature" id="tx-signature" cols="100" rows="7"></textarea>
 
     <script src="../dist/own-blockchain-sdk.js"></script>
     <script>
@@ -89,7 +74,10 @@
         document.getElementById('private-key').value = 'ZXXkM41yHhkzb2k5KjeWuGCzYj7AXAfJdMXqKM4TGKq';
         document.getElementById('address').value =
             ownBlockchainSdk.crypto.addressFromPrivateKey(document.getElementById('private-key').value);
-        document.getElementById('tx-body').value = document.getElementById('tx-body').value.trim();
+
+        var tx = ownBlockchainSdk.transactions.createTx(document.getElementById('address').value, 1, 0.001);
+        tx.addTransferChxAction('CHexBLbHxh8DqnDcFjLRkaYCneiG9h7XVWq', 1.5);
+        document.getElementById('tx-body').value = tx.toJson(4);
 
         function generateWalletButtonClick() {
             var wallet = ownBlockchainSdk.crypto.generateWallet();
