@@ -1,6 +1,6 @@
 'use strict';
 
-const chainiumCrypto = require('../src/crypto');
+const ownCrypto = require('../src/crypto');
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // Encoding
@@ -12,7 +12,7 @@ test('utf8ToHex', () => {
     const expected = '436861696e69756d';
 
     // ACT
-    const actual = chainiumCrypto.utf8ToHex(originalData);
+    const actual = ownCrypto.utf8ToHex(originalData);
 
     // ASSERT
     expect(actual).toBe(expected);
@@ -24,7 +24,7 @@ test('encode64', () => {
     const expected = 'Q2hhaW5pdW0=';
 
     // ACT
-    const actual = chainiumCrypto.encode64(chainiumCrypto.utf8ToHex(originalData));
+    const actual = ownCrypto.encode64(ownCrypto.utf8ToHex(originalData));
 
     // ASSERT
     expect(actual).toBe(expected);
@@ -36,7 +36,7 @@ test('decode64', () => {
     const expected = '436861696e69756d';
 
     // ACT
-    const actual = chainiumCrypto.decode64(encodedData);
+    const actual = ownCrypto.decode64(encodedData);
 
     // ASSERT
     expect(actual).toBe(expected);
@@ -48,7 +48,7 @@ test('encode58', () => {
     const expected = 'CGwVR5Wyya4';
 
     // ACT
-    const actual = chainiumCrypto.encode58(chainiumCrypto.utf8ToHex(originalData));
+    const actual = ownCrypto.encode58(ownCrypto.utf8ToHex(originalData));
 
     // ASSERT
     expect(actual).toBe(expected);
@@ -60,7 +60,7 @@ test('decode58', () => {
     const expected = '436861696e69756d';
 
     // ACT
-    const actual = chainiumCrypto.decode58(encodedData);
+    const actual = ownCrypto.decode58(encodedData);
 
     // ASSERT
     expect(actual).toBe(expected);
@@ -72,7 +72,7 @@ test('encode58 and decode58 round trip', () => {
     const expectedLength = 64;
 
     // ACT
-    const actual = chainiumCrypto.decode58(chainiumCrypto.encode58(expected));
+    const actual = ownCrypto.decode58(ownCrypto.encode58(expected));
 
     // ASSERT
     expect(actual.length).toBe(expectedLength);
@@ -89,7 +89,7 @@ test('hash', () => {
     const expected = 'Dp6vNLdUbRTc1Y3i9uSBritNqvqe4es9MjjGrVi1nQMu';
 
     // ACT
-    const actual = chainiumCrypto.hash(chainiumCrypto.utf8ToHex(originalData));
+    const actual = ownCrypto.hash(ownCrypto.utf8ToHex(originalData));
 
     // ASSERT
     expect(actual).toBe(expected);
@@ -103,7 +103,7 @@ test('deriveHash', () => {
     const expected = '5kHcMrwXUptjmbdR8XBW2yY3FkSFwnMdrVr22Yg39pTR';
 
     // ACT
-    const actual = chainiumCrypto.deriveHash(address, nonce, txActionNumber);
+    const actual = ownCrypto.deriveHash(address, nonce, txActionNumber);
 
     // ASSERT
     expect(actual).toBe(expected);
@@ -115,11 +115,11 @@ test('deriveHash', () => {
 
 test('generateWallet', () => {
     // ARRANGE
-    const wallet = chainiumCrypto.generateWallet();
+    const wallet = ownCrypto.generateWallet();
     const expected = wallet.address;
 
     // ACT
-    const actual = chainiumCrypto.addressFromPrivateKey(wallet.privateKey);
+    const actual = ownCrypto.addressFromPrivateKey(wallet.privateKey);
 
     // ASSERT
     expect(actual).toBe(expected);
@@ -131,7 +131,7 @@ test('addressFromPrivateKey', () => {
     const expected = 'CHGmdQdHfLPcMHtzyDzxAkTAQiRvKJrkYv8';
 
     // ACT
-    const actual = chainiumCrypto.addressFromPrivateKey(privateKey);
+    const actual = ownCrypto.addressFromPrivateKey(privateKey);
 
     // ASSERT
     expect(actual).toBe(expected);
@@ -141,11 +141,11 @@ test('signMessage', () => {
     // ARRANGE
     const networkCode = 'UNIT_TESTS';
     const privateKey = '3rzY3EENhYrWXzUqNnMEbGUr3iEzzSZrjMwJ1CgQpJpq';
-    const tx = chainiumCrypto.utf8ToHex('Chainium');
+    const tx = ownCrypto.utf8ToHex('Chainium');
     const expected = "EYzWMyZjqHkwsNFKcFEg4Q64m4jSUD7cAeKucyZ3a9MKeNmXTbRK3czqNVGj9RpkPGji9AtGiUxDtipqE3DtFPHxU";
 
     // ACT
-    const actual = chainiumCrypto.signMessage(networkCode, privateKey, tx);
+    const actual = ownCrypto.signMessage(networkCode, privateKey, tx);
 
     // ASSERT
     expect(actual).toBe(expected);
@@ -158,7 +158,7 @@ test('signPlainText', () => {
     const expected = "EzCsWgPozyVT9o6TycYV6q1n4YK4QWixa6Lk4GFvwrj6RU3K1wHcwNPZJUMBYcsGp5oFhytHiThon5zqE8uLk8naB";
 
     // ACT
-    const actual = chainiumCrypto.signPlainText(privateKey, txt);
+    const actual = ownCrypto.signPlainText(privateKey, txt);
 
     // ASSERT
     expect(actual).toBe(expected);
@@ -166,14 +166,14 @@ test('signPlainText', () => {
 
 test('verifyPlainTextSignature', () => {
     // ARRANGE
-    const wallet = chainiumCrypto.generateWallet();
+    const wallet = ownCrypto.generateWallet();
     const privateKey = wallet.privateKey;
-    const expected = chainiumCrypto.addressFromPrivateKey(privateKey);
+    const expected = ownCrypto.addressFromPrivateKey(privateKey);
     const txt = 'Chainium';
-    const signature = chainiumCrypto.signPlainText(privateKey, txt);
+    const signature = ownCrypto.signPlainText(privateKey, txt);
 
     // ACT
-    const actual = chainiumCrypto.verifyPlainTextSignature(signature, txt);
+    const actual = ownCrypto.verifyPlainTextSignature(signature, txt);
 
     // ASSERT
     expect(actual).toBe(expected);
