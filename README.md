@@ -39,15 +39,21 @@ Use the package in JS code:
 
 ```js
 var ownSdk = require('own-blockchain-sdk');
+var networkCode = 'OWN_PUBLIC_BLOCKCHAIN_TESTNET';
+
+// Create a new wallet
 var wallet = ownSdk.crypto.generateWallet();
 console.log(wallet);
-```
 
-Sample output:
+// Compose a transaction with nonce = 1 and actionFee = 0.01
+var tx = ownSdk.transactions.createTx(wallet.address, 1, 0.01);
+tx.addTransferChxAction('CHxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx', 100); // Transfer 100 CHX to CHxxx... address.
 
-```
-{ privateKey: '...',
-  address: 'CH...' }
+// Look at the raw transaction in JSON format
+console.log(tx.toJson(4));
+
+// Sign the transaction for submission to node API on TestNet
+console.log(tx.sign(networkCode, wallet.privateKey));
 ```
 
 
