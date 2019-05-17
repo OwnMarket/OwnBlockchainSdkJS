@@ -160,7 +160,6 @@
         };
         var v = parseInt(hexSignature.substr(128, 2));
 
-        // f(private, f(public, message)) === f(public, f(private, message)) === message
         var msg = ec.keyFromPrivate(dataToVerify, 'hex').getPrivate().toString(10);
         var publicKey = ec.recoverPubKey(msg, ecSignature, v, 'hex').encode('hex');
 
@@ -193,9 +192,14 @@
         }
     }
 
-    function generateSeed(passphrase) {
-        var mnemonic = generateMnemonic();
-        return generateSeedFromMnemonic(mnemonic, passphrase);
+    function generateSeedFromKeyStore(keyStoreEncrypted, passwordHash) {
+        var mnemonic = decrypt(keyStoreEncrypted, passwordHash);
+        if (validateMnemonic(mnemonic)) {
+            return generateSeedFromMnemonic(mnemonic, passwordHash);
+        }
+        else {
+            throw 'Invalid keystore';
+        }
     }
 
     function generateMasterNodeFromSeed(seed) {
@@ -217,31 +221,21 @@
         return generateMasterNodeFromMnemonic(mnemonic, passphrase);
     }
 
-    function generateWalletFromSeed(seed, index) {
-        if (index < 1) throw 'HD wallets must be derived with index > 0';
-        var masterNode = generateMasterNodeFromSeed(seed);
-        var childNode = masterNode.derivePath(`m/44'/${bip44RegistrationIndex}'/0'/0/${index}`);
-        var keyPair = ec.keyFromPrivate(childNode.privateKey);
-        return walletFromKeyPair(keyPair);
-    }
 
-    function generateWalletKeystore(mnemonic, password) {
+    function generateKeystore(mnemonic, passwordHash) {
         if (validateMnemonic(mnemonic)) {
-            return encrypt(mnemonic, password);
+            return encrypt(mnemonic, passwordHash);
         }
         else {
             throw 'Invalid mnemonic';
         }
     }
 
-    function generateSeedFromKeyStore(keyStoreEncrypted, password) {
-        var mnemonic = decrypt(keyStoreEncrypted, password);
-        if (validateMnemonic(mnemonic)) {
-            return generateSeedFromMnemonic(mnemonic, password);
-        }
-        else {
-            throw 'Invalid keystore';
-        }
+    function generateWalletFromSeed(seed, index) {
+        var masterNode = generateMasterNodeFromSeed(seed);
+        var childNode = masterNode.derivePath(`m/44'/60'/0'/0/${index}`);
+        var keyPair = ec.keyFromPrivate(childNode.privateKey);
+        return walletFromKeyPair(keyPair);
     }
 
     function restoreWalletsFromSeed(seed, walletCount) {
@@ -252,6 +246,16 @@
         }
 
         return wallets;
+    }
+
+    function generateWalletFromKeystore(keyStoreEncrypted, passwordHash, index) {
+        var seed = generateSeedFromKeyStore(keyStoreEncrypted, passwordHash);
+        return generateWalletFromSeed(seed, index);
+    }
+
+    function restoreWalletsFromKeystore(keyStoreEncrypted, passwordHash, walletCount) {
+        var seed = generateSeedFromKeyStore(keyStoreEncrypted, passwordHash);
+        return restoreWalletsFromSeed(seed, walletCount);
     }
 
     module.exports = {
@@ -280,9 +284,11 @@
         // HD Crypto
         generateMnemonic: generateMnemonic,
         generateSeedFromMnemonic: generateSeedFromMnemonic,
-        generateWalletFromSeed: generateWalletFromSeed,
-        generateWalletKeystore: generateWalletKeystore,
         generateSeedFromKeyStore: generateSeedFromKeyStore,
-        restoreWalletsFromSeed: restoreWalletsFromSeed
+        generateKeystore: generateKeystore,
+        generateWalletFromSeed: generateWalletFromSeed,
+        restoreWalletsFromSeed: restoreWalletsFromSeed,
+        generateWalletFromKeystore: generateWalletFromKeystore,
+        restoreWalletsFromKeystore: restoreWalletsFromKeystore
     };
 }());
