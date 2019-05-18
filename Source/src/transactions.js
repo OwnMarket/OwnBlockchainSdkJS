@@ -71,6 +71,7 @@
             function addCreateAssetAction() {
                 addAction('CreateAsset', {
                 });
+                return ownSdkCrypto.deriveHash(tx.senderAddress, tx.nonce, tx.actions.length);
             }
 
             function addSetAssetCodeAction(assetHash, assetCode) {
@@ -90,6 +91,7 @@
             function addCreateAccountAction() {
                 addAction('CreateAccount', {
                 });
+                return ownSdkCrypto.deriveHash(tx.senderAddress, tx.nonce, tx.actions.length);
             }
 
             function addSetAccountControllerAction(accountHash, controllerAddress) {

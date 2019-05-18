@@ -268,6 +268,20 @@ test('addCreateAssetAction results in correct JSON structure', () => {
     expect(actual).toBe(expected);
 });
 
+test('addCreateAssetAction returns created asset hash', () => {
+    // ARRANGE
+    const senderWallet = ownCrypto.generateWallet();
+    const nonce = 1;
+    const expected = ownCrypto.deriveHash(senderWallet.address, nonce, 1);
+
+    // ACT
+    const tx = ownTxs.createTx(senderWallet.address, nonce, 0.01, 0);
+    const actual = tx.addCreateAssetAction();
+
+    // ASSERT
+    expect(actual).toBe(expected);
+});
+
 test('addSetAssetCodeAction results in correct JSON structure', () => {
     // ARRANGE
     const senderWallet = ownCrypto.generateWallet();
@@ -351,6 +365,20 @@ test('addCreateAccountAction results in correct JSON structure', () => {
     const tx = ownTxs.createTx(senderWallet.address, 1, 0.01, 0);
     tx.addCreateAccountAction();
     const actual = tx.toJson(4);
+
+    // ASSERT
+    expect(actual).toBe(expected);
+});
+
+test('addCreateAccountAction returns created account hash', () => {
+    // ARRANGE
+    const senderWallet = ownCrypto.generateWallet();
+    const nonce = 1;
+    const expected = ownCrypto.deriveHash(senderWallet.address, nonce, 1);
+
+    // ACT
+    const tx = ownTxs.createTx(senderWallet.address, nonce, 0.01, 0);
+    const actual = tx.addCreateAccountAction();
 
     // ASSERT
     expect(actual).toBe(expected);
