@@ -193,13 +193,7 @@
     }
 
     function generateSeedFromKeyStore(keyStoreEncrypted, passwordHash) {
-        var mnemonic = decrypt(keyStoreEncrypted, passwordHash);
-        if (validateMnemonic(mnemonic)) {
-            return generateSeedFromMnemonic(mnemonic, passwordHash);
-        }
-        else {
-            throw 'Invalid keystore';
-        }
+        return decrypt(keyStoreEncrypted, passwordHash);
     }
 
     function generateMasterNodeFromSeed(seed) {
@@ -223,12 +217,8 @@
 
 
     function generateKeystore(mnemonic, passwordHash) {
-        if (validateMnemonic(mnemonic)) {
-            return encrypt(mnemonic, passwordHash);
-        }
-        else {
-            throw 'Invalid mnemonic';
-        }
+        var seed = generateSeedFromMnemonic(mnemonic);
+        return encrypt(seed, passwordHash);
     }
 
     function generateWalletFromSeed(seed, index) {
