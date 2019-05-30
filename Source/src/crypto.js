@@ -223,7 +223,7 @@
 
     function generateWalletFromSeed(seed, index) {
         var masterNode = generateMasterNodeFromSeed(seed);
-        var childNode = masterNode.derivePath(`m/44'/60'/0'/0/${index}`);
+        var childNode = masterNode.derivePath(`m/44'/${bip44RegistrationIndex}'/0'/0/${index}`);
         var keyPair = ec.keyFromPrivate(childNode.privateKey);
         return walletFromKeyPair(keyPair);
     }
