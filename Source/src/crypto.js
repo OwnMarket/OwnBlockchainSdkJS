@@ -230,7 +230,7 @@
 
     function restoreWalletsFromSeed(seed, walletCount) {
         var wallets = [];
-        for (let i = 1; i <= walletCount; i ++) {
+        for (let i = 0; i <= walletCount; i ++) {
             var wallet = generateWalletFromSeed(seed, i);
             wallets.push(wallet);
         }
