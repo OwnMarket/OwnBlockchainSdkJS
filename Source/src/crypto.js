@@ -221,11 +221,15 @@
         return encrypt(seed, passwordHash);
     }
 
-    function generateWalletFromSeed(seed, index) {
+    function generateWalletFromSeedWithExplicitBipIndex(seed, bipIndex, index) {
         var masterNode = generateMasterNodeFromSeed(seed);
-        var childNode = masterNode.derivePath(`m/44'/${bip44RegistrationIndex}'/0'/0/${index}`);
+        var childNode = masterNode.derivePath(`m/44'/${bipIndex}'/0'/0/${index}`);
         var keyPair = ec.keyFromPrivate(childNode.privateKey);
         return walletFromKeyPair(keyPair);
+    }
+
+    function generateWalletFromSeed(seed, index) {
+        return generateWalletFromSeedWithExplicitBipIndex(seed, bip44RegistrationIndex, index);
     }
 
     function restoreWalletsFromSeed(seed, walletCount) {
@@ -243,9 +247,21 @@
         return generateWalletFromSeed(seed, index);
     }
 
+
     function restoreWalletsFromKeystore(keyStoreEncrypted, passwordHash, walletCount) {
         var seed = generateSeedFromKeyStore(keyStoreEncrypted, passwordHash);
         return restoreWalletsFromSeed(seed, walletCount);
+    }
+
+    function restoreOldWalletsFromMnemonic(mnemonic, walletCount) {
+        var seed = generateSeedFromMnemonic(mnemonic);
+        var wallets = [];
+        for (let i = 0; i <= walletCount; i ++) {
+            var wallet = generateWalletFromSeedWithExplicitBipIndex(seed, 60, i);
+            wallets.push(wallet);
+        }
+
+        return wallets;
     }
 
     module.exports = {
@@ -279,6 +295,7 @@
         generateWalletFromSeed: generateWalletFromSeed,
         restoreWalletsFromSeed: restoreWalletsFromSeed,
         generateWalletFromKeystore: generateWalletFromKeystore,
-        restoreWalletsFromKeystore: restoreWalletsFromKeystore
+        restoreWalletsFromKeystore: restoreWalletsFromKeystore,
+        restoreOldWalletsFromMnemonic: restoreOldWalletsFromMnemonic
     };
 }());
