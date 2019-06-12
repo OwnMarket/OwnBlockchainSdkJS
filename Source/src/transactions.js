@@ -171,11 +171,10 @@
 
             function sign(networkCode, privateKey) {
                 var json = JSON.stringify(tx);
-                var rawTw = ownSdkCrypto.utf8ToHex(json)
-                var txHash = ownSdkCrypto.hash(rawTw);
-                var signature = ownSdkCrypto.signMessage(networkCode, privateKey, txHash);
+                var rawTx = ownSdkCrypto.utf8ToHex(json)
+                var signature = ownSdkCrypto.signMessage(networkCode, privateKey, rawTx);
                 return {
-                    tx: ownSdkCrypto.encode64(rawTw),
+                    tx: ownSdkCrypto.encode64(rawTx),
                     signature: signature
                 }
             }
