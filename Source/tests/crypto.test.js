@@ -178,3 +178,16 @@ test('verifyPlainTextSignature', () => {
     // ASSERT
     expect(actual).toBe(expected);
 });
+
+test('generateWalletFromMnemonic', () => {
+    // ARRANGE
+    const mnemonic = "receive raccoon rocket donkey cherry garbage medal skirt random smoke young before scale leave hold insect foster blouse mail donkey regular vital hurt april";
+
+    // ACT
+    const seed = ownCrypto.generateSeedFromMnemonic(mnemonic);
+    const wallet = ownCrypto.generateWalletFromSeed(seed, 0);
+
+    // ASSERT
+    expect(wallet.privateKey).toBe("ECPVXjz78oMdmLKbHVAAo7X7evtTh4EfnaW5Yc1SHWaj");
+    expect(wallet.address).toBe("CHb5Z6Za34nv28Z3rLZ2Yd8LFikHaTqLhxB");
+});
