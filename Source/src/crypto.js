@@ -75,7 +75,7 @@
         if (result.length != 128)
             throw `[SHA512] invalid hex encoded length: Expected 128, got ${result.length}`;
 
-    return result;
+        return result;
     }
 
     function sha160(hexData) {
@@ -166,7 +166,6 @@
         return blockchainAddress(publicKey);
     }
 
-
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     // Hierarchical Deterministic Cryptography
     ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -199,22 +198,6 @@
     function generateMasterNodeFromSeed(seed) {
         return Bip32.fromSeed(Buffer.from(seed, 'hex'));
     }
-
-    function generateMasterNodeFromMnemonic(mnemonic, passphrase) {
-        if (validateMnemonic(mnemonic)) {
-            var seed = generateSeedFromMnemonic(mnemonic, passphrase);
-            return generateMasterNodeFromSeed(seed);
-        }
-        else {
-            throw 'Invalid mnemonic';
-        }
-    }
-
-    function generateMasterNode(passphrase) {
-        var mnemonic = generateMnemonic();
-        return generateMasterNodeFromMnemonic(mnemonic, passphrase);
-    }
-
 
     function generateKeystore(mnemonic, passwordHash) {
         var seed = generateSeedFromMnemonic(mnemonic);
