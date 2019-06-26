@@ -33,7 +33,7 @@ test('encode64', () => {
 test('decode64', () => {
     // ARRANGE
     const encodedData = 'Q2hhaW5pdW0=';
-    const expected = '436861696e69756d';
+    const expected = ownCrypto.utf8ToHex('Chainium');
 
     // ACT
     const actual = ownCrypto.decode64(encodedData);
@@ -57,7 +57,7 @@ test('encode58', () => {
 test('decode58', () => {
     // ARRANGE
     const encodedData = 'CGwVR5Wyya4';
-    const expected = '436861696e69756d';
+    const expected = ownCrypto.utf8ToHex('Chainium');
 
     // ACT
     const actual = ownCrypto.decode58(encodedData);
