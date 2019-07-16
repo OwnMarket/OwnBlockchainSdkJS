@@ -198,7 +198,7 @@
             seed = decrypt(keyStoreEncrypted, passwordHash);
         }
         catch(err){
-            // invalid encryption            
+            // Keystore encrypted with encoded password hash.            
         }
         if (!seed) {
             seed = decrypt(keyStoreEncrypted, encodedPasswordHash)
