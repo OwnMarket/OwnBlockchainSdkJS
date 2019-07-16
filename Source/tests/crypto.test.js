@@ -199,7 +199,7 @@ test('verifyPlainTextSignature', () => {
 
 test('generateRecoverSeedFromKeystoreBackwardsCompatibility', () => {
     // ARRANGE
-    const mnemonic = "receive raccoon rocket donkey cherry garbage medal skirt random smoke young before scale leave hold insect foster blouse mail donkey regular vital hurt april";
+    const mnemonic = ownCrypto.generateMnemonic();
     const password = "pass";
 
     // ACT
@@ -217,6 +217,7 @@ test('generateRecoverSeedFromKeystoreBackwardsCompatibility', () => {
     // ASSERT
     expect(seedWithEncryptedPasswordHash).toBe(seed);
     expect(seedWithPasswordHash).toBe(seed);
+    expect(seed.length).toBe(128)
 });
 
 test('generateWalletFromMnemonic', () => {

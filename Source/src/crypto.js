@@ -200,7 +200,7 @@
         catch(err){
             // Keystore encrypted with encoded password hash.            
         }
-        if (!seed) {
+        if (!seed || seed.length !== 128 /* 512 bits length hex encoded */) {
             seed = decrypt(keyStoreEncrypted, encodedPasswordHash)
         }
         
