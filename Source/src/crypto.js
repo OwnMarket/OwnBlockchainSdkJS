@@ -191,16 +191,29 @@
         }
     }
 
-    function generateSeedFromKeyStore(keyStoreEncrypted, passwordHash) {
-        return decrypt(keyStoreEncrypted, passwordHash);
+    function generateSeedFromKeyStore(keyStoreEncrypted, encodedPasswordHash) {
+        var passwordHash = decode58(encodedPasswordHash);
+        var seed = ''
+        try {
+            seed = decrypt(keyStoreEncrypted, passwordHash);
+        }
+        catch(err){
+            // invalid encryption            
+        }
+        if (!seed) {
+            seed = decrypt(keyStoreEncrypted, encodedPasswordHash)
+        }
+        
+        return seed;
     }
 
     function generateMasterNodeFromSeed(seed) {
         return Bip32.fromSeed(Buffer.from(seed, 'hex'));
     }
 
-    function generateKeystore(mnemonic, passwordHash) {
+    function generateKeystore(mnemonic, encodedPasswordHash) {
         var seed = generateSeedFromMnemonic(mnemonic);
+        var passwordHash = decode58(encodedPasswordHash);
         return encrypt(seed, passwordHash);
     }
 

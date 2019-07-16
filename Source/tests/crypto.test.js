@@ -3,6 +3,24 @@
 const ownCrypto = require('../src/crypto');
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
+// Encryption
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+test('encryptDecryptRountrip', () => {
+    // ARRANGE
+    const originalData = 'Chainium';
+    const password = "pass";
+
+    // ACT
+    const passwordHash = ownCrypto.hash(password);
+    const encrypted = ownCrypto.encrypt(originalData, passwordHash);
+    const actual = ownCrypto.decrypt(encrypted, passwordHash);
+
+    // ASSERT
+    expect(actual).toBe(originalData);
+});
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
 // Encoding
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -177,6 +195,28 @@ test('verifyPlainTextSignature', () => {
 
     // ASSERT
     expect(actual).toBe(expected);
+});
+
+test('generateRecoverSeedFromKeystoreBackwardsCompatibility', () => {
+    // ARRANGE
+    const mnemonic = "receive raccoon rocket donkey cherry garbage medal skirt random smoke young before scale leave hold insect foster blouse mail donkey regular vital hurt april";
+    const password = "pass";
+
+    // ACT
+    const seed = ownCrypto.generateSeedFromMnemonic(mnemonic);
+
+    // Old model: keystore generation (encryption) with encoded password hash
+    const encodedPasswordHash = ownCrypto.hash(password);   
+    const keystoreWithEncodedPasswordHash = ownCrypto.encrypt(seed, encodedPasswordHash);
+    const seedWithEncryptedPasswordHash = ownCrypto.generateSeedFromKeyStore(keystoreWithEncodedPasswordHash, encodedPasswordHash);
+
+    // New model: keystore generation (encryption) with decoded password hash
+    const keystoreWithPasswordHash = ownCrypto.generateKeystore(mnemonic, encodedPasswordHash);    
+    const seedWithPasswordHash = ownCrypto.generateSeedFromKeyStore(keystoreWithPasswordHash, encodedPasswordHash);
+
+    // ASSERT
+    expect(seedWithEncryptedPasswordHash).toBe(seed);
+    expect(seedWithPasswordHash).toBe(seed);
 });
 
 test('generateWalletFromMnemonic', () => {
