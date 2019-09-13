@@ -98,7 +98,7 @@
                 var tx = JSON.parse(document.getElementById('tx-body').value);
                 if (tx && tx.nonce && tx.nonce >= 0 && tx.actions && tx.actions.length > 0) {
                     tx.actions.forEach((a, i) => {
-                        if (a.actionType && (a.actionType === 'CreateAsset' || a.actionType === 'CreateAccount')) {
+                        if (['CreateAsset', 'CreateAccount', 'PlaceTradeOrder'].includes(a.actionType)) {
                             var actionNumber = i + 1;
                             var derivedHash = ownBlockchainSdk.crypto.deriveHash(
                                 document.getElementById('address').value, tx.nonce, actionNumber);
