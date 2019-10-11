@@ -96,11 +96,36 @@
         return hash(addressHex + nonceHex + txActionNumberHex);
     }
 
+    function addressPrefix() {
+        return '065A';
+    }
+
     function blockchainAddress(hexPublicKey) {
-        var prefix = '065A';
+        var prefix = addressPrefix();
         var publicKeyHashWithPrefix = prefix + sha160(sha256(hexPublicKey));
         var checksum = sha256(sha256(publicKeyHashWithPrefix)).substr(0, 8); // First 4 bytes.
         return encode58(publicKeyHashWithPrefix + checksum);
+    }
+
+    function isValidBlockchainAddress(address) {
+        if (!address || !address.startsWith('CH')) {
+            return false;
+        }
+        
+        var addressHex = decode58(address);
+        var expectedPrefix = addressPrefix();
+        var calculatedPrefix = addressHex.substr(0, 4); // Prefix is in the first 2 bytes.
+        if (addressHex.length != 52 /* 26 bytes */
+            || calculatedPrefix.toLowerCase() !== expectedPrefix.toLowerCase()
+        ) {
+            return false;
+        }
+                            
+        var publicKeyHashWithPrefixHex = addressHex.substr(0, 44);  // First 22 bytes.
+        var checksumHex = addressHex.substr(44, 8);                 // Last 4 bytes.
+        var calculatedChecksumHex = sha256(sha256(publicKeyHashWithPrefixHex)).substr(0, 8);
+        
+        return checksumHex === calculatedChecksumHex;
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -198,12 +223,12 @@
             seed = decrypt(keyStoreEncrypted, passwordHash);
         }
         catch(err){
-            // Keystore encrypted with encoded password hash.            
+            // Keystore encrypted with encoded password hash.
         }
         if (!seed || seed.length !== 128 /* 512 bits length hex encoded */) {
             seed = decrypt(keyStoreEncrypted, encodedPasswordHash)
         }
-        
+
         return seed;
     }
 
@@ -275,6 +300,7 @@
         // Hashing
         hash: hash,
         deriveHash: deriveHash,
+        isValidBlockchainAddress: isValidBlockchainAddress,
 
         // Signing
         generateWallet: generateWallet,

@@ -127,6 +127,22 @@ test('deriveHash', () => {
     expect(actual).toBe(expected);
 });
 
+test('isValidBlockchainAddress', () => {
+
+    const inlineData = [
+        { address : 'CHPvS1Hxs4oLcrbgKWYYmubSBjurjUdvjg8', isValid: true },
+        { address : 'XRPvS1Hxs4oLcrbgKWYYmubSBjurjUdvjg8', isValid: false },
+        { address : 'CHPvS1Hxs4oLcgKccYmubSBjurjUdvjg8', isValid: false },
+        { address : 'CHPvS1Hxs4oLcrbgKccYmubSBjurjUdvjg8', isValid: false },
+    ];
+
+    inlineData.forEach(data => {
+        let actual = ownCrypto.isValidBlockchainAddress(data.address);        
+        var expected = data.isValid;
+        expect(actual).toBe(expected);
+    });    
+});
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // Signing
 ////////////////////////////////////////////////////////////////////////////////////////////////////
