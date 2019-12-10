@@ -75,7 +75,7 @@
         document.getElementById('address').value =
             ownBlockchainSdk.crypto.addressFromPrivateKey(document.getElementById('private-key').value);
 
-        var tx = ownBlockchainSdk.transactions.createTx(document.getElementById('address').value, 1, 0.001);
+        var tx = ownBlockchainSdk.transactions.createTx(document.getElementById('address').value, 1, 0.1);
         tx.addTransferChxAction('CHexBLbHxh8DqnDcFjLRkaYCneiG9h7XVWq', 1.5);
         document.getElementById('tx-body').value = tx.toJson(4);
 
