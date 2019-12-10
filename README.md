@@ -45,8 +45,8 @@ var networkCode = 'OWN_PUBLIC_BLOCKCHAIN_TESTNET';
 var wallet = ownSdk.crypto.generateWallet();
 console.log(wallet);
 
-// Compose a transaction with nonce = 1 and actionFee = 0.01
-var tx = ownSdk.transactions.createTx(wallet.address, 1, 0.01);
+// Compose a transaction with nonce = 1 and actionFee = 0.1
+var tx = ownSdk.transactions.createTx(wallet.address, 1, 0.1);
 tx.addTransferChxAction('CHxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx', 100); // Transfer 100 CHX to CHxxx... address.
 
 // Look at the raw transaction in JSON format
