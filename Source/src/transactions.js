@@ -157,6 +157,40 @@
                 });
             }
 
+            function addPlaceTradeOrderAction(
+                accountHash,
+                baseAssetHash,
+                quoteAssetHash,
+                side,
+                amount,
+                orderType,
+                limitPrice,
+                stopPrice,
+                trailingOffset,
+                trailingOffsetIsPercentage,
+                timeInForce
+            ) {
+                addAction('PlaceTradeOrder', {
+                    accountHash: accountHash,
+                    baseAssetHash: baseAssetHash,
+                    quoteAssetHash: quoteAssetHash,
+                    side: side,
+                    amount: amount,
+                    orderType: orderType,
+                    limitPrice: limitPrice,
+                    stopPrice: stopPrice,
+                    trailingOffset: trailingOffset,
+                    trailingOffsetIsPercentage: trailingOffsetIsPercentage,
+                    timeInForce: timeInForce
+                });
+            }
+
+            function addCancelTradeOrderAction(tradeOrderHash) {
+                addAction('CancelTradeOrder', {
+                    tradeOrderHash: tradeOrderHash
+                });
+            }
+
             ////////////////////////////////////////////////////////////////////////////////////////////////////
             // Signing
             ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -202,6 +236,8 @@
                 addChangeKycControllerAddressAction: addChangeKycControllerAddressAction,
                 addAddKycProviderAction: addAddKycProviderAction,
                 addRemoveKycProviderAction: addRemoveKycProviderAction,
+                addPlaceTradeOrderAction: addPlaceTradeOrderAction,
+                addCancelTradeOrderAction: addCancelTradeOrderAction,
 
                 toJson: toJson,
                 sign: sign

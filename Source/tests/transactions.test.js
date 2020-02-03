@@ -655,6 +655,102 @@ test('addRemoveKycProviderAction results in correct JSON structure', () => {
 });
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
+// Actions: Trading
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+test('addPlaceTradeOrderAction results in correct JSON structure', () => {
+    // ARRANGE
+    const senderWallet = ownCrypto.generateWallet();
+    const accountHash = 'AccH1'
+    const baseAssetHash = 'BaseAssetH1'
+    const quoteAssetHash = 'QuoteAssetH1'
+    const side = 'SELL'
+    const amount = 10000
+    const orderType = 'TRAILING_STOP_LIMIT'
+    const limitPrice = 10
+    const stopPrice = 9
+    const trailingOffset = 20 // %
+    const trailingOffsetIsPercentage = true // %
+    const timeInForce = 'GTC'
+
+    const expected =
+`{
+    "senderAddress": "${senderWallet.address}",
+    "nonce": 1,
+    "expirationTime": 0,
+    "actionFee": 0.01,
+    "actions": [
+        {
+            "actionType": "PlaceTradeOrder",
+            "actionData": {
+                "accountHash": "${accountHash}",
+                "baseAssetHash": "${baseAssetHash}",
+                "quoteAssetHash": "${quoteAssetHash}",
+                "side": "${side}",
+                "amount": ${amount},
+                "orderType": "${orderType}",
+                "limitPrice": ${limitPrice},
+                "stopPrice": ${stopPrice},
+                "trailingOffset": ${trailingOffset},
+                "trailingOffsetIsPercentage": ${trailingOffsetIsPercentage},
+                "timeInForce": "${timeInForce}"
+            }
+        }
+    ]
+}`;
+
+    // ACT
+    const tx = ownTxs.createTx(senderWallet.address, 1, 0.01, 0);
+    tx.addPlaceTradeOrderAction(
+        accountHash,
+        baseAssetHash,
+        quoteAssetHash,
+        side,
+        amount,
+        orderType,
+        limitPrice,
+        stopPrice,
+        trailingOffset,
+        trailingOffsetIsPercentage,
+        timeInForce
+    );
+    const actual = tx.toJson(4);
+
+    // ASSERT
+    expect(actual).toBe(expected);
+});
+
+test('addCancelTradeOrderAction results in correct JSON structure', () => {
+    // ARRANGE
+    const senderWallet = ownCrypto.generateWallet();
+    const tradeOrderHash = 'TradeOrderH1'
+
+    const expected =
+`{
+    "senderAddress": "${senderWallet.address}",
+    "nonce": 1,
+    "expirationTime": 0,
+    "actionFee": 0.01,
+    "actions": [
+        {
+            "actionType": "CancelTradeOrder",
+            "actionData": {
+                "tradeOrderHash": "${tradeOrderHash}"
+            }
+        }
+    ]
+}`;
+
+    // ACT
+    const tx = ownTxs.createTx(senderWallet.address, 1, 0.01, 0);
+    tx.addCancelTradeOrderAction(tradeOrderHash);
+    const actual = tx.toJson(4);
+
+    // ASSERT
+    expect(actual).toBe(expected);
+});
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
 // Actions: Multiple
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
